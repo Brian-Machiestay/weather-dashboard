@@ -1,0 +1,15 @@
+/* header  styles */
+header {
+    background-color: rgb(59, 59, 198);
+    height: 10vh;
+}
+
+header h1 {
+    color: white;
+    width: 35%;
+    margin: auto;
+    font-weight: bold;
+    font-size: 3vw;
+    padding-top: 10px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
