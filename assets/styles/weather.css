@@ -13,3 +13,25 @@ header h1 {
     padding-top: 10px;
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
+
+/* current and future weather styling */
+#firstAside {
+    display: flex;
+}
+
+/* today weather styles */
+#today {
+    height: 50vh;
+    border: 1px solid black;
+    width: auto;
+}
+
+/* history section styles */
+.history {
+    width: 30%;
+}
+
+/* forecast div */
+.forecastDiv {
+    width: 70%;
+}
