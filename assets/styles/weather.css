@@ -1,3 +1,9 @@
+/* general styles */
+.colorMe {
+    color: white;
+}
+
+
 /* header  styles */
 header {
     background-color: rgb(59, 59, 198);
@@ -21,7 +27,7 @@ header h1 {
 
 /* today weather styles */
 #today {
-    height: 40vh;
+    height: 30vh;
     border: 1px solid black;
     max-width: 100%;
     margin-top: 20px;
@@ -60,4 +66,15 @@ header h1 {
 .forecastDiv {
     width: 60%;
     margin-left: auto;
+}
+
+/* forecast styles */
+#forecast {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 5px;
+}
+
+.future {
+    background-color: rgb(16, 16, 95);
 }
