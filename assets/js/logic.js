@@ -35,4 +35,6 @@ async function extractTodayAndFiveDayData() {
     return relevantData
 }
 
+
+
 extractTodayAndFiveDayData().then((res) => console.log(res));
