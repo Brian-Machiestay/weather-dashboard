@@ -10,25 +10,26 @@ header h1 {
     margin: auto;
     font-weight: bold;
     font-size: 3vw;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-family:Verdana, Geneva, Tahoma, sans-serif
 }
 
 /* current and future weather styling */
 #firstAside {
     display: flex;
+    flex-wrap: nowrap;
 }
 
 /* today weather styles */
 #today {
     height: 40vh;
     border: 1px solid black;
-    width: 100%;
+    max-width: 100%;
     margin-top: 20px;
 }
 
 /* history section styles */
-.history {
-    width: 20%;
+.historySec {
+    width: 300px;
 }
 
 .input-group {
@@ -36,11 +37,13 @@ header h1 {
     flex-direction: column;
 }
 
+
 #search-button {
     width: 300px;
-    background-color: rgb(65, 148, 220);
+    background-color: rgb(51, 155, 246);
     margin: 20px auto;
     border-radius: 10px;
+    color: white;
 }
 
 .history h2 {
@@ -49,8 +52,12 @@ header h1 {
 
 .histBtns {
     margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: rgb(160, 158, 158);
+    border: none;
 }
 /* forecast div */
 .forecastDiv {
-    width: 100%;
+    width: 60%;
+    margin-left: auto;
 }
