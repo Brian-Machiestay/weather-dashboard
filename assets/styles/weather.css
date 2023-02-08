@@ -85,6 +85,7 @@ header h1 {
     flex-direction: column;
     justify-content: space-between;
     margin-bottom: 10px;
+    padding-left: 10px;
 }
 
 .forecastDiv h2 {
