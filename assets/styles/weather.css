@@ -22,14 +22,13 @@ header h1 {
 #today {
     height: 40vh;
     border: 1px solid black;
-    width: auto;
+    width: 100%;
     margin-top: 20px;
 }
 
 /* history section styles */
 .history {
-    width: 30%;
-    min-width: 200px;
+    width: 20%;
 }
 
 .input-group {
@@ -38,7 +37,7 @@ header h1 {
 }
 
 #search-button {
-    width: 100%;
+    width: 300px;
     background-color: blue;
     margin: 20px auto;
     border-radius: 10px;
