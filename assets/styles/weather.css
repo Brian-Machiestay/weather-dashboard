@@ -38,7 +38,7 @@ header h1 {
 
 #search-button {
     width: 300px;
-    background-color: blue;
+    background-color: rgb(65, 148, 220);
     margin: 20px auto;
     border-radius: 10px;
 }
@@ -47,6 +47,9 @@ header h1 {
     font-weight: bold;
 }
 
+.histBtns {
+    margin-bottom: 10px;
+}
 /* forecast div */
 .forecastDiv {
     width: 100%;
