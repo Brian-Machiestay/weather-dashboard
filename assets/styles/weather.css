@@ -10,7 +10,6 @@ header h1 {
     margin: auto;
     font-weight: bold;
     font-size: 3vw;
-    padding-top: 10px;
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
@@ -21,17 +20,35 @@ header h1 {
 
 /* today weather styles */
 #today {
-    height: 50vh;
+    height: 40vh;
     border: 1px solid black;
     width: auto;
+    margin-top: 20px;
 }
 
 /* history section styles */
 .history {
     width: 30%;
+    min-width: 200px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+#search-button {
+    width: 100%;
+    background-color: blue;
+    margin: 20px auto;
+    border-radius: 10px;
+}
+
+.history h2 {
+    font-weight: bold;
 }
 
 /* forecast div */
 .forecastDiv {
-    width: 70%;
+    width: 100%;
 }
