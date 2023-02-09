@@ -1,6 +1,11 @@
 // the api key
 const APIkey = "074b0008c9908e74560eb4ed254c480c";
 
+// get user country search item
+function userCountrySearch (search = 'London') {
+    return search;
+}
+
 // render the icon associated with this weather condition
 async function renderWeatherIcon(iconCode, iconTag) {
     let src = "http://openweathermap.org/img/w/" + iconCode + ".png";
@@ -16,7 +21,7 @@ async function getWeaterData() {
 }
 
 async function extractTodayAndFiveDayData() {
-    let now = moment().format('YYYY-MM-DD')
+    let now = moment();
     const data = await getWeaterData();
     console.log(data)
     const relevantData = [];
@@ -24,9 +29,11 @@ async function extractTodayAndFiveDayData() {
     let counter = 1;
     for (let i = 0; i < data.list.length; i++) {
         if (counter == 7) break;
-        if (now === currentDataDate) {
-            relevantData.push(data.list[i]);
-            now = moment().add(counter, 'days').format('YYYY-MM-DD');
+        if (now.format('YYYY-MM-DD') === currentDataDate) {
+            const thisItem = data.list[i];
+            thisItem.dt_txt = now.format('DD/MM/YYYY')
+            relevantData.push(thisItem);
+            now = moment().add(counter, 'days');
             console.log(currentDataDate);
             counter++;
         }
@@ -35,6 +42,18 @@ async function extractTodayAndFiveDayData() {
     return relevantData
 }
 
+function updateDOMForcastsWithRelData(relData) {
+    // get today DOM objects
+    const todaydd = $('#today .dd')
+    const todaytp = $('#today .tp')
+    const todaywd = $('#today .wd')
+    const todayhd = $('#today .hd')
 
+    // update today DOM objects with relevant today data
+    todaydd.text(`(${relData[0].dt_txt})`)
+}
 
-extractTodayAndFiveDayData().then((res) => console.log(res));
+extractTodayAndFiveDayData().then((res) => {
+    console.log(res);
+    updateDOMForcastsWithRelData(res);
+});
