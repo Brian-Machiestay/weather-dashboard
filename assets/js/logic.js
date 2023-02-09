@@ -2,8 +2,14 @@
 const APIkey = "074b0008c9908e74560eb4ed254c480c";
 
 // get user country search item
-function userCountrySearch (search = 'London') {
-    return search;
+function userCountrySearch () {
+    const search = 'London';
+    const searchQuery = $('.weather-search').val().trim();
+    if (searchQuery === '' || searchQuery === undefined) {
+        alert('Enter a valid city name');
+        return search;
+    }
+    return searchQuery;
 }
 
 // render the icon associated with this weather condition
@@ -15,9 +21,14 @@ async function renderWeatherIcon(iconCode, iconTag) {
 
 // get the weather condition of the city from the openweather api
 async function getWeaterData() {
-    let res = await $.get(`https://api.openweathermap.org/data/2.5/weather?q=London&appid=${APIkey}`)
-    res = await $.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${res.coord.lat}&lon=${res.coord.lon}&units=metric&appid=${APIkey}`)
-    return res;
+    const searchQuery = userCountrySearch();
+    try {
+        let res = await $.get(`https://api.openweathermap.org/data/2.5/weather?q=${searchQuery}&appid=${APIkey}`)
+        res = await $.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${res.coord.lat}&lon=${res.coord.lon}&units=metric&appid=${APIkey}`)
+        return res;
+    } catch (e) {
+        alert('The city name you entered is not defined');
+    }
 }
 
 async function extractTodayAndFiveDayData() {
@@ -79,3 +90,8 @@ extractTodayAndFiveDayData().then((res) => {
     console.log(res);
     updateDOMForcastsWithRelData(res);
 });
+
+$('.search-button').click((event) => {
+    event.preventDefault();
+    extractTodayAndFiveDayData().then((res) => updateDOMForcastsWithRelData(res));
+})
