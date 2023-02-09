@@ -86,11 +86,14 @@ function updateDOMForcastsWithRelData(relData) {
     console.log('good')
 }
 
+// render relevant data in DOM as this promise resolves
 extractTodayAndFiveDayData().then((res) => {
     console.log(res);
     updateDOMForcastsWithRelData(res);
 });
 
+
+// attach an event listener to the search button
 $('.search-button').click((event) => {
     event.preventDefault();
     extractTodayAndFiveDayData().then((res) => updateDOMForcastsWithRelData(res));
