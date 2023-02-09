@@ -88,6 +88,10 @@ header h1 {
     padding-left: 10px;
 }
 
+#today .imgP {
+    display: flex;
+}
+
 .forecastDiv h2 {
     margin-top: 10px;
 }

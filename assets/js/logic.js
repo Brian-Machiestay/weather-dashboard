@@ -16,7 +16,7 @@ async function renderWeatherIcon(iconCode, iconTag) {
 // get the weather condition of the city from the openweather api
 async function getWeaterData() {
     let res = await $.get(`https://api.openweathermap.org/data/2.5/weather?q=London&appid=${APIkey}`)
-    res = await $.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${res.coord.lat}&lon=${res.coord.lon}&appid=${APIkey}`)
+    res = await $.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${res.coord.lat}&lon=${res.coord.lon}&units=metric&appid=${APIkey}`)
     return res;
 }
 
@@ -44,13 +44,30 @@ async function extractTodayAndFiveDayData() {
 
 function updateDOMForcastsWithRelData(relData) {
     // get today DOM objects
-    const todaydd = $('#today .dd')
-    const todaytp = $('#today .tp')
-    const todaywd = $('#today .wd')
-    const todayhd = $('#today .hd')
+    let todaydd = $('#today .dd')
+    let todayicon = $('#today .wicon')
+    let todaytp = $('#today .tp')
+    let todaywd = $('#today .wd')
+    let todayhd = $('#today .hd')
 
     // update today DOM objects with relevant today data
-    todaydd.text(`(${relData[0].dt_txt})`)
+    todaydd.text(`${userCountrySearch()} (${relData[0].dt_txt})`);
+    todaytp.text(`Temp: ${relData[0].main.temp}\u00B0C`);
+    todaywd.text(`Wind: ${relData[0].wind.speed} KPH`);
+    todayhd.text(`Humidity: ${relData[0].clouds.all}%`);
+    renderWeatherIcon(relData[0].weather[0].icon, todayicon);
+
+    // update 5 forecast information
+    for (let i = 0; i < relData.length; i++) {
+        if (i === 0) {
+           
+        }
+        else {
+            todaydd = $('.future .dd')
+        }
+    }
+    
+    console.log($('.future')[0].children[0])
 }
 
 extractTodayAndFiveDayData().then((res) => {
