@@ -58,16 +58,14 @@ function updateDOMForcastsWithRelData(relData) {
     renderWeatherIcon(relData[0].weather[0].icon, todayicon);
 
     // update 5 forecast information
-    for (let i = 0; i < relData.length; i++) {
-        if (i === 0) {
-           
-        }
-        else {
-            todaydd = $('.future .dd')
-        }
+    for (let i = 0; i < relData.length - 1; i++) {
+        todaydd = $('.future')[i].children[i];
+        todaydd.textContent = `${relData[i + 1].dt_txt}`;
+        todayicon = $('.future')[i].children[i]
     }
     
     console.log($('.future')[0].children[0])
+    console.log('good')
 }
 
 extractTodayAndFiveDayData().then((res) => {
