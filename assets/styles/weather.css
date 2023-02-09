@@ -27,7 +27,7 @@ header h1 {
 
 /* today weather styles */
 #today {
-    height: 40vh;
+    height: 35vh;
     border: 1px solid black;
     max-width: 100%;
     margin-top: 20px;
@@ -79,7 +79,7 @@ header h1 {
 
 .future {
     background-color: rgba(40, 49, 66, 0.969);
-    height: 30vh;
+    height: 35vh;
     width: 180px;
     display: flex;
     flex-direction: column;
