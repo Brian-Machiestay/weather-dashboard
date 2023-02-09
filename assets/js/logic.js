@@ -6,7 +6,6 @@ function userCountrySearch () {
     const search = 'London';
     const searchQuery = $('.weather-search').val().trim();
     if (searchQuery === '' || searchQuery === undefined) {
-        alert('Enter a valid city name');
         return search;
     }
     return searchQuery;
@@ -28,6 +27,7 @@ async function getWeaterData() {
         return res;
     } catch (e) {
         alert('The city name you entered is not defined');
+        return;
     }
 }
 
