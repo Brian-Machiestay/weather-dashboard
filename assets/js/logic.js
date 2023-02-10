@@ -22,35 +22,38 @@ async function renderWeatherIcon(iconCode, iconTag) {
 async function getWeaterData() {
     const searchQuery = userCountrySearch();
     try {
-        let res = await $.get(`https://api.openweathermap.org/data/2.5/weather?q=${searchQuery}&appid=${APIkey}`)
-        res = await $.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${res.coord.lat}&lon=${res.coord.lon}&units=metric&appid=${APIkey}`)
+        let res = await $.get(`https://api.openweathermap.org/data/2.5/weather?q=${searchQuery}&appid=${APIkey}`);
+        res = await $.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${res.coord.lat}&lon=${res.coord.lon}&units=metric&appid=${APIkey}`);
+        saveToLocalStorage(searchQuery);
         return res;
     } catch (e) {
-        alert('The city name you entered is not defined');
-        return;
+        throw new Error('The city name you entered does not exist, else check your connection');
     }
 }
 
 async function extractTodayAndFiveDayData() {
     let now = moment();
-    const data = await getWeaterData();
-    console.log(data)
-    const relevantData = [];
-    let currentDataDate = data.list[0].dt_txt.split(" ")[0];
-    let counter = 1;
-    for (let i = 0; i < data.list.length; i++) {
-        if (counter == 7) break;
-        if (now.format('YYYY-MM-DD') === currentDataDate) {
-            const thisItem = data.list[i];
-            thisItem.dt_txt = now.format('DD/MM/YYYY')
-            relevantData.push(thisItem);
-            now = moment().add(counter, 'days');
-            console.log(currentDataDate);
-            counter++;
-        }
+    let data = '';
+    try {
+        data = await getWeaterData();
+        const relevantData = [];
+        let currentDataDate = data.list[0].dt_txt.split(" ")[0];
+        let counter = 1;
+        for (let i = 0; i < data.list.length; i++) {
+            if (counter == 7) break;
+            if (now.format('YYYY-MM-DD') === currentDataDate) {
+                const thisItem = data.list[i];
+                thisItem.dt_txt = now.format('DD/MM/YYYY')
+                relevantData.push(thisItem);
+                now = moment().add(counter, 'days');
+                counter++;
+            }
         currentDataDate = data.list[i].dt_txt.split(" ")[0];
+        }
+        return relevantData
+    } catch (e) {
+        throw new Error('The city name you entered does not exist, else check your connection');
     }
-    return relevantData
 }
 
 function updateDOMForcastsWithRelData(relData) {
@@ -81,37 +84,51 @@ function updateDOMForcastsWithRelData(relData) {
         todayhd =  $('.future')[i].children[4];
         todayhd.textContent = `Humidity: ${relData[i + 1].main.humidity}%`;
     }
-    
-    console.log($('.future')[0].children[0])
-    console.log('good')
 }
 
 // store search item to local storage
 function saveToLocalStorage(item) {
-    const history = [];
-    if (localStorage.get('history') === undefined) {
-        history.push(item);
-        localStorage.setItem('history', history);
+    let history = [];
+    if (localStorage.getItem('history') === null) {
+        if (item !== null) {
+            history.push(item);
+            localStorage.setItem('history', JSON.stringify(history));
+        }
     }
     else {
         history = JSON.parse(localStorage.getItem('history'));
         localStorage.removeItem('history');
         history.push(item);
+        history = [...new Set(history)].reverse();
         localStorage.setItem('history', JSON.stringify(history));
     }
 }
 
-
+// render history from localstorage 
+function renderHistory () {
+    let history = localStorage.getItem(history);
+    if (history !== undefined) {
+        history = JSON.parse(history);
+        for (let i = 0; i < history.length; i++) {
+            $('input-group-append').append(`<button type="button" class="btn btn-primary histBtns">${history[i]}</button>`)
+        }
+    }
+}
 
 // render relevant data in DOM as this promise resolves
 extractTodayAndFiveDayData().then((res) => {
     console.log(res);
     updateDOMForcastsWithRelData(res);
-});
+}).catch((e) => alert(e.mesaage));
+
 
 
 // attach an event listener to the search button
 $('.search-button').click((event) => {
     event.preventDefault();
-    extractTodayAndFiveDayData().then((res) => updateDOMForcastsWithRelData(res));
-})
+    extractTodayAndFiveDayData()
+    .then((res) => updateDOMForcastsWithRelData(res))
+    .catch((e) => {
+        alert('The city name you entered does not exist, else check your connection');
+    })
+});
