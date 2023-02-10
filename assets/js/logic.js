@@ -109,16 +109,17 @@ function renderHistory () {
     let history = localStorage.getItem('history');
     if (history !== null) {
         history = JSON.parse(history);
+        $('.histBtns').remove();
         for (let i = 0; i < history.length; i++) {
-            $('input-group-append').append(`<button type="button" class="btn btn-primary histBtns">${history[i]}</button>`)
+            $('.input-group').append(`<button type="button" class="btn btn-primary histBtns">${history[i]}</button>`)
         }
     }
 }
 
 // render relevant data in DOM as this promise resolves
 extractTodayAndFiveDayData().then((res) => {
+    renderHistory();
     updateDOMForcastsWithRelData(res);
-    renderHistory()
 }).catch((e) => {
     console.log(e);
     alert(e)
@@ -130,7 +131,10 @@ extractTodayAndFiveDayData().then((res) => {
 $('.search-button').click((event) => {
     event.preventDefault();
     extractTodayAndFiveDayData()
-    .then((res) => updateDOMForcastsWithRelData(res))
+    .then((res) => {
+        renderHistory();
+        updateDOMForcastsWithRelData(res)
+    })
     .catch((e) => {
         alert('The city name you entered does not exist, else check your connection');
     })
