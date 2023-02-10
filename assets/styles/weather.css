@@ -96,3 +96,8 @@ header h1 {
 .forecastDiv h2 {
     margin-top: 10px;
 }
+
+.dynamicBtns {
+    display: flex;
+    flex-direction: column;
+}

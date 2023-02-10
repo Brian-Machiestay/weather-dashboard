@@ -19,8 +19,9 @@ async function renderWeatherIcon(iconCode, iconTag) {
 
 
 // get the weather condition of the city from the openweather api
-async function getWeaterData() {
-    const searchQuery = userCountrySearch();
+async function getWeaterData(value) {
+    let searchQuery = value;
+    if (searchQuery == null) searchQuery = userCountrySearch();
     try {
         let res = await $.get(`https://api.openweathermap.org/data/2.5/weather?q=${searchQuery}&appid=${APIkey}`);
         res = await $.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${res.coord.lat}&lon=${res.coord.lon}&units=metric&appid=${APIkey}`);
@@ -31,11 +32,11 @@ async function getWeaterData() {
     }
 }
 
-async function extractTodayAndFiveDayData() {
+async function extractTodayAndFiveDayData(value = null) {
     let now = moment();
     let data = '';
     try {
-        data = await getWeaterData();
+        data = await getWeaterData(value);
         const relevantData = [];
         let currentDataDate = data.list[0].dt_txt.split(" ")[0];
         let counter = 1;
@@ -56,7 +57,9 @@ async function extractTodayAndFiveDayData() {
     }
 }
 
-function updateDOMForcastsWithRelData(relData) {
+function updateDOMForcastsWithRelData(relData, country = 'nothing') {
+    let userCountry = country;
+    if (country == 'nothing') userCountry = userCountrySearch();
     // get today DOM objects
     let todaydd = $('#today .dd')
     let todayicon = $('#today .wicon')
@@ -65,7 +68,7 @@ function updateDOMForcastsWithRelData(relData) {
     let todayhd = $('#today .hd')
 
     // update today DOM objects with relevant today data
-    todaydd.text(`${userCountrySearch()} (${relData[0].dt_txt})`);
+    todaydd.text(`${userCountry} (${relData[0].dt_txt})`);
     todaytp.text(`Temp: ${relData[0].main.temp}\u00B0C`);
     todaywd.text(`Wind: ${relData[0].wind.speed} KPH`);
     todayhd.text(`Humidity: ${relData[0].main.humidity}%`);
@@ -111,7 +114,7 @@ function renderHistory () {
         history = JSON.parse(history);
         $('.histBtns').remove();
         for (let i = 0; i < history.length; i++) {
-            $('.input-group').append(`<button type="button" class="btn btn-primary histBtns">${history[i]}</button>`)
+            $('.dynamicBtns').append(`<button type="button" class="btn btn-primary histBtns">${history[i]}</button>`)
         }
     }
 }
@@ -139,3 +142,18 @@ $('.search-button').click((event) => {
         alert('The city name you entered does not exist, else check your connection');
     })
 });
+
+
+// also attach an event listener to the history buttons
+$('.dynamicBtns').click((event) => {
+    const targetvalue = event.target.textContent
+    console.log(targetvalue)
+    if (targetvalue !== 'Search') extractTodayAndFiveDayData(targetvalue)
+    .then((res) => {
+        renderHistory();
+        updateDOMForcastsWithRelData(res, targetvalue)
+    })
+    .catch((e) => {
+        alert('The city name you entered does not exist, else check your connection');
+    });
+})
