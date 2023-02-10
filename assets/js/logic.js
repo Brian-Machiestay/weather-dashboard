@@ -86,6 +86,23 @@ function updateDOMForcastsWithRelData(relData) {
     console.log('good')
 }
 
+// store search item to local storage
+function saveToLocalStorage(item) {
+    const history = [];
+    if (localStorage.get('history') === undefined) {
+        history.push(item);
+        localStorage.setItem('history', history);
+    }
+    else {
+        history = JSON.parse(localStorage.getItem('history'));
+        localStorage.removeItem('history');
+        history.push(item);
+        localStorage.setItem('history', JSON.stringify(history));
+    }
+}
+
+
+
 // render relevant data in DOM as this promise resolves
 extractTodayAndFiveDayData().then((res) => {
     console.log(res);
