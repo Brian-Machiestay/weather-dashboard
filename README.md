@@ -13,3 +13,4 @@ Several features have been employed in this application as listedd below:
 
 ## Screenshots
 Below is a preview of the deployed application
+![preview](./assets/images/preview.jpg)
