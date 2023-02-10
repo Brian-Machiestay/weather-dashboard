@@ -91,23 +91,23 @@ function saveToLocalStorage(item) {
     let history = [];
     if (localStorage.getItem('history') === null) {
         if (item !== null) {
-            history.push(item);
+            history.unshift(item);
             localStorage.setItem('history', JSON.stringify(history));
         }
     }
     else {
         history = JSON.parse(localStorage.getItem('history'));
         localStorage.removeItem('history');
-        history.push(item);
-        history = [...new Set(history)].reverse();
+        history.unshift(item);
+        history = [...new Set(history)];
         localStorage.setItem('history', JSON.stringify(history));
     }
 }
 
 // render history from localstorage 
 function renderHistory () {
-    let history = localStorage.getItem(history);
-    if (history !== undefined) {
+    let history = localStorage.getItem('history');
+    if (history !== null) {
         history = JSON.parse(history);
         for (let i = 0; i < history.length; i++) {
             $('input-group-append').append(`<button type="button" class="btn btn-primary histBtns">${history[i]}</button>`)
@@ -117,9 +117,12 @@ function renderHistory () {
 
 // render relevant data in DOM as this promise resolves
 extractTodayAndFiveDayData().then((res) => {
-    console.log(res);
     updateDOMForcastsWithRelData(res);
-}).catch((e) => alert(e.mesaage));
+    renderHistory()
+}).catch((e) => {
+    console.log(e);
+    alert(e)
+});
 
 
 
