@@ -119,9 +119,12 @@ function renderHistory () {
     }
 }
 
+// render the user history
+renderHistory();
+
+
 // render relevant data in DOM as this promise resolves
 extractTodayAndFiveDayData().then((res) => {
-    renderHistory();
     updateDOMForcastsWithRelData(res);
 }).catch((e) => {
     console.log(e);
