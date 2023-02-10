@@ -146,8 +146,7 @@ $('.search-button').click((event) => {
 
 // also attach an event listener to the history buttons
 $('.dynamicBtns').click((event) => {
-    const targetvalue = event.target.textContent
-    console.log(targetvalue)
+    const targetvalue = event.target.textContent;
     if (targetvalue !== 'Search') extractTodayAndFiveDayData(targetvalue)
     .then((res) => {
         renderHistory();
